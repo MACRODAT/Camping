@@ -1,0 +1,105 @@
+@import 'variables';
+
+// Define gradient colors
+$gradient-start: #d3d3d3;
+$gradient-end: #ffffff;
+
+body {
+  font-family: $primary-font;
+
+  background: radial-gradient(circle, transparent 20%, #E4E4ED 20%, #E4E4ED 80%, transparent 80%, transparent) 0% 0% / 108px 108px, radial-gradient(circle, transparent 20%, #E4E4ED 20%, #E4E4ED 80%, transparent 80%, transparent) 54px 54px / 108px 108px, linear-gradient(#7fc743 0.5px, transparent 0.5px) 0px -0.25px / 54px 54px, linear-gradient(90deg, #CCE5B8 0.5px, #E4E4ED 0.5px) -0.25px 0px / 54px 54px #E4E4ED;
+  background-size: 108px 108px, 108px 108px, 54px 54px, 54px 54px;
+  background-color: #E4E4ED;
+  color: $text-color;
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+#root {
+	width: 100vw;
+	height: 100vh;
+}
+.boxtainer {
+	display: flex;
+	width: 100vw;
+	height: 100vh;
+	margin: 0px; padding: 0px;
+}
+  
+  .left-pane {
+	background-color: $primary-color;
+	width: 34vw;
+	padding: 0px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	color: $text-color;
+	align-items: center; /* Center the logo and other content */
+  }
+  
+  .title-bar {
+	font-size: 24px;
+	margin-bottom: 20px;
+	color: $text-color;
+  }
+  
+  .right-pane {
+	width: 66vw;
+	padding: 0; margin: 0;
+	box-sizing: border-box;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+  }
+  
+  button {
+	background-color: $text-color;
+	color: $primary-color;
+	padding: $button-padding;
+	border: none;
+	border-radius: $button-border-radius;
+	cursor: pointer;
+	font-family: $primary-font;
+  
+	&:hover {
+	  background-color: $button-hover-color;
+	}
+  }
+
+  .logo {
+	max-width: 40px;
+	width: 40px;
+	margin: 0px; padding: 0px;
+	height: auto;
+	filter: invert(0.5) drop-shadow(2px 4px 6px black);
+  }
+
+  #title-bar{
+	margin: 0px;
+	padding: 0px;
+	color: #E4E4ED;
+	width: 100%;
+
+	#title{
+		margin: 0px; padding: 0px;
+		padding-top: 8px;
+		color: #E4E4ED;
+		opacity: 0.7;
+		margin-left: 10px;
+	}
+
+	#desc{
+		margin: 0px; padding: 0px;
+		margin-left: 10px;
+		padding-top: 8px;
+		font-style: italic;
+		font-family: cursive;
+		color: #E4E4ED;
+		opacity: 0.4;
+	}
+  }

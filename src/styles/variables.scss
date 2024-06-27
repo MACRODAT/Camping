@@ -1,0 +1,19 @@
+// Color variables
+$background-color: #e4f2e4; // deep black-green
+$text-color: #45b875; // white
+
+// Font variables
+$primary-font: 'Poppins', sans-serif; // stylish and rounded
+
+// Other variables
+$button-hover-color: darken($background-color, 10%);
+$button-padding: 10px;
+$button-border-radius: 5px;
+
+$primary-color: #013035; // deep black-green
+
+$enable-shadows: true;
+$prefix: "mo-";
+
+// Then import Bootstrap
+@import "node_modules/bootstrap/scss/bootstrap";
