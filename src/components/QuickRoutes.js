@@ -75,7 +75,7 @@ import { createControlComponent } from "@react-leaflet/core";
 import "leaflet-routing-machine";
 
 const createRoutineMachineLayer = (props) => {
-	const { waypoints } = props;
+  const { waypoints } = props;
   console.log("updating.....[+]", waypoints)
   const instance = L.Routing.control({
     waypoints
@@ -84,6 +84,6 @@ const createRoutineMachineLayer = (props) => {
   return instance;
 };
 
-const RoutingMachine = ({dep, arr}) => createControlComponent(createRoutineMachineLayer);
+const RoutingMachine = createControlComponent(createRoutineMachineLayer);
 
 export default RoutingMachine;

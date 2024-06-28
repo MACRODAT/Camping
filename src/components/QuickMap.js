@@ -12,8 +12,6 @@ const RecenterAutomatically = ({lat,lng}) => {
 	return null;
 }
 
-let routingmachine = () => <></>
-
 const QuickMap = () => {
   const position = [34, -6]
 
@@ -23,37 +21,6 @@ const QuickMap = () => {
   const [pos, setPos] = useState(-1);
   const [deppoint, setDeppoint] = useState(position);
   const [arrpoint, setArrpoint] = useState(position);
-
-  
-//   const [routingMachine, setRoutingMachine] = useState(null)
-
-//   const RoutingMachineRef = useRef(null);
-
-//   useEffect(() => {
-// 	if (!map) return;
-// 	if (map)
-// 	{
-// 		RoutingMachineRef.current = Routing.control({
-// 			position: 'topleft',
-// 			lineOptions: { // Options for the routing line
-// 				styles: [
-// 				  {
-// 					color: '#757de8',
-// 				  },
-// 				],
-// 			  },
-// 			  waypoints: [deppoint, arrpoint],
-// 		})
-// 		setRoutingMachine(RoutingMachineRef.current)
-// 	}
-//   }, [map])
-
-//   useEffect(() => {
-//     if (!routingMachine) return
-//     if (routingMachine) {
-//       routingMachine.addTo(map)
-//     }
-//   }, [routingMachine])
 
   useEffect(() => {
 	if (dep != null && (dep.lat != deppoint[0] || dep.lng != deppoint[1]))
@@ -77,12 +44,16 @@ const QuickMap = () => {
 	{
 		setPos(-1);
 	}
-  }, [dep, arr])
+	return () => {
+		
+	}
+  }, [dep, arr]);
 
-  console.log("updating...", pos)
   const mapRef = useRef(null);
 
-
+  setInterval(() => {
+	console.log("[W] ", dep, arr);
+  }, 10000);
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
@@ -96,7 +67,7 @@ const QuickMap = () => {
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
-				{/* <RoutingMachine ref={mapRef} waypoints={deppoint} />	 */}
+				<RoutingMachine ref={mapRef} waypoints={[deppoint, arrpoint]} />	
 				{
 					// <RoutingMachine map={mapRef.current} departure={deppoint} arrival={arrpoint} />
 					// pos >=0 ? <RoutingMachine departure={deppoint} arrival={arrpoint} /> : <></>
