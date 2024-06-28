@@ -40,7 +40,7 @@ const QuickMap = () => {
 		setPos(1);
 		console.log("[M] ", deppoint, [arr.lat, arr.lng]);
 		if (mapRef.current) {
-			mapRef.current.setWaypoints([deppoint, [arr.lat, arr.lng]]);
+			mapRef.current.setWaypoints([deppoint, [34.26, -5.92], [arr.lat, arr.lng]]);
 		}
 	}
 	else
