@@ -22,38 +22,43 @@ const QuickMap = () => {
   const [deppoint, setDeppoint] = useState(position);
   const [arrpoint, setArrpoint] = useState(position);
 
+  const [loop, setLoop] = useState();
+
   useEffect(() => {
 	if (dep != null && (dep.lat != deppoint[0] || dep.lng != deppoint[1]))
 	{
 		setDeppoint([dep.lat, dep.lng])
 		setPos(0);
-		
+		console.log("[M] ", [dep.lat, dep.lng], arrpoint);
 		if (mapRef.current) {
-			mapRef.current.setWaypoints(deppoint);
+			mapRef.current.setWaypoints([[dep.lat, dep.lng], arrpoint]);
 		}
 	}
 	else if (arr != null && (arr.lat != arrpoint[0] || arr.lng != arrpoint[1]))
 	{
 		setArrpoint([arr.lat, arr.lng])
 		setPos(1);
+		console.log("[M] ", deppoint, [arr.lat, arr.lng]);
 		if (mapRef.current) {
-			mapRef.current.setWaypoints(arrpoint);
+			mapRef.current.setWaypoints([deppoint, [arr.lat, arr.lng]]);
 		}
 	}
 	else
 	{
 		setPos(-1);
 	}
+	// setLoop(setInterval(() => {
+	// 	console.log("[W] ", deppoint, arrpoint);
+	//   }, 10000)
+	// );
 	return () => {
-		
+		clearInterval(loop);
 	}
   }, [dep, arr]);
 
   const mapRef = useRef(null);
 
-  setInterval(() => {
-	console.log("[W] ", dep, arr);
-  }, 10000);
+  
 
   return (
     <div style={{ height: '100%', width: '100%' }}>

@@ -78,7 +78,7 @@ const createRoutineMachineLayer = (props) => {
   const { waypoints } = props;
   console.log("updating.....[+]", waypoints)
   const instance = L.Routing.control({
-    waypoints
+    // waypoints: waypoints
   });
 
   return instance;
