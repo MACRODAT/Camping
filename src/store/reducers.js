@@ -1,9 +1,10 @@
-import { INCREMENT, DECREMENT, SETDEPARTURE, SETARRIVAL } from './actions';
+import { INCREMENT, DECREMENT, SETDEPARTURE, SETARRIVAL, SETLINK } from './actions';
 
 // Initial State
 const initialState = {
     dep: null,
-	arr: null
+	arr: null,
+    link: ""
 };
 
 // Reducer
@@ -19,6 +20,11 @@ const counterReducer = (state = initialState, action) => {
                 ...state,
                 arr: action.payload,
             };
+        case SETLINK:
+            return {
+                ...state,
+                link: action.payload
+            }
         default:
             return state;
     }
