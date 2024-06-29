@@ -1,18 +1,8 @@
 import pandas as pd
 from geopy.distance import geodesic
 from os.path import dirname, join
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 
-app = Flask(__name__)
-CORS(app)
-csv_path = join(dirname(__file__), 'data.csv')
-
-@app.route('/', methods=['GET'])
-def main():
-    return "Campings API."
-
-def split_route(start_wp, end_wp, csv_path, split_distance_km=100):
+def split_route(start_wp, end_wp, csv_path, split_distance_km=20):
     """
     Splits the road between two waypoints and searches for intermediate waypoints from a CSV file.
 
@@ -51,45 +41,23 @@ def split_route(start_wp, end_wp, csv_path, split_distance_km=100):
         # Find the closest waypoint in the CSV
         df['distance'] = df.apply(lambda row: geodesic(intermediate_wp, [str(row['LATITUDE']).replace(',','.'), str(row['LONGITUDE']).replace(',','.')]).kilometers, axis=1)
         closest_wp = df.loc[df['distance'].idxmin()]
-        i = 1
-        while i < df['distance'].count():
-            if df['distance'].nsmallest(i).iloc[-1] > split_distance_km * .95:
-                break
-            # Append the closest waypoint to the 
-            # df['distance'].
-            way = [repair(closest_wp['LATITUDE']), repair(closest_wp['LONGITUDE'])]
-            print(way)
-            if way not in result:
-                result.append(way)
-                break
-            i = i + 1
+        print(df['distance'].idxmin())
+        # Append the closest waypoint to the 
+        # df['distance'].
+        way = [repair(closest_wp['LATITUDE']), repair(closest_wp['LONGITUDE'])]
+        print(way)
+        if way not in result:
+            result.append(way)
     
     # Add the end waypoint
     result.append(end_wp)
 
     return result
 
-@app.route('/getways', methods=['GET'])
-def get_ways():
-    # Retrieve query parameters
-    start_lat = float(request.args.get('start_lat'))
-    start_lon = float(request.args.get('start_lon'))
-    end_lat = float(request.args.get('end_lat'))
-    end_lon = float(request.args.get('end_lon'))
-    # csv_path = request.args.get('csv_path')
-    split_distance_km = float(request.args.get('split_distance_km', 100))
-    
-    # Define start and end waypoints
-    start_wp = [start_lat, start_lon]
-    end_wp = [end_lat, end_lon]
-    
-    # Get the waypoints
-    waypoints = split_route(start_wp, end_wp, csv_path, split_distance_km)
-    
-    # Return the waypoints as JSON
-    return jsonify(waypoints)
+# Example usage
+start_wp = [34.033, -6.8]
+end_wp = [34.6867, -1.9114]
 
-if __name__ == '__main__':
-    app.run(debug=True)
-
-
+csv_path = join(dirname(__file__), 'data.csv')
+waypoints = split_route(start_wp, end_wp, csv_path)
+print(waypoints)

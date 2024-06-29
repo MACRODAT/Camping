@@ -2,9 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { useSelector } from "react-redux";
 import "leaflet-routing-machine";
-import Leaflet from "react-leaflet";
 import RoutingMachine from "./QuickRoutes";
-import { LatLng, Routing, latLng, map } from "leaflet";
+import axios from 'axios';
 
 const RecenterAutomatically = ({lat,lng}) => {
 	const map = useMap();
@@ -21,8 +20,27 @@ const QuickMap = () => {
   const [pos, setPos] = useState(-1);
   const [deppoint, setDeppoint] = useState(position);
   const [arrpoint, setArrpoint] = useState(position);
+  const [waypoints, setWaypoints] = useState([]);
 
   const [loop, setLoop] = useState();
+
+  const fetchWaypoints = async (deppoint_, arrpoint_) => {
+    try {
+      const response = await axios.get('http://127.0.0.1:5000/getways', {
+        params: {
+          start_lat: deppoint_[0],
+          start_lon: deppoint_[1],
+          end_lat: arrpoint_[0],
+          end_lon: arrpoint_[1],
+          split_distance_km: 100
+        }
+      });
+    //   setWaypoints(response.data);
+	  return response.data;
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   useEffect(() => {
 	if (dep != null && (dep.lat != deppoint[0] || dep.lng != deppoint[1]))
@@ -31,7 +49,12 @@ const QuickMap = () => {
 		setPos(0);
 		console.log("[M] ", [dep.lat, dep.lng], arrpoint);
 		if (mapRef.current) {
-			mapRef.current.setWaypoints([[dep.lat, dep.lng], arrpoint]);
+			fetchWaypoints([dep.lat, dep.lng], arrpoint).then((val) => {
+				console.log(val)
+				mapRef.current.setWaypoints(val);
+			}, (err) => {
+				console.log("[E] ", err)
+			});
 		}
 	}
 	else if (arr != null && (arr.lat != arrpoint[0] || arr.lng != arrpoint[1]))
@@ -40,17 +63,17 @@ const QuickMap = () => {
 		setPos(1);
 		console.log("[M] ", deppoint, [arr.lat, arr.lng]);
 		if (mapRef.current) {
-			mapRef.current.setWaypoints([deppoint, [34.26, -5.92], [arr.lat, arr.lng]]);
+			fetchWaypoints(deppoint, [arr.lat, arr.lng]).then((val) => {
+				mapRef.current.setWaypoints(val);
+			}, (err) => {
+				console.log("[E] ", err)
+			});
 		}
 	}
 	else
 	{
 		setPos(-1);
 	}
-	// setLoop(setInterval(() => {
-	// 	console.log("[W] ", deppoint, arrpoint);
-	//   }, 10000)
-	// );
 	return () => {
 		clearInterval(loop);
 	}
