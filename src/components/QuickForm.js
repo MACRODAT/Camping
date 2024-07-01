@@ -22,13 +22,13 @@ const QuickForm = () => {
 	useEffect(
 		() => {
 			dispatch(setDep(dcity));
-			console.log("[F] Dispatch called ", dcity)
+			// console.log("[F] Dispatch called ", dcity)
 		}
 	, [dcity])
 	useEffect(
 		() => {
 			dispatch(setArr(acity));
-			console.log("[F] Dispatch called ", acity)
+			// console.log("[F] Dispatch called ", acity)
 		}
 	, [acity])
 

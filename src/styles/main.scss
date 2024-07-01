@@ -44,6 +44,7 @@ body {
 	justify-content: space-between;
 	color: $text-color;
 	align-items: center; /* Center the logo and other content */
+	overflow-x: scroll;
   }
   
   .title-bar {

@@ -12,7 +12,7 @@ csv_path = join(dirname(__file__), 'data.csv')
 def main():
     return "Campings API."
 
-def split_route(start_wp, end_wp, csv_path, split_distance_km=100):
+def split_route(start_wp, end_wp, csv_path, split_distance_km=50):
     """
     Splits the road between two waypoints and searches for intermediate waypoints from a CSV file.
 
@@ -43,6 +43,7 @@ def split_route(start_wp, end_wp, csv_path, split_distance_km=100):
 
     # Initialize the result with the starting waypoint
     result = [start_wp]
+    info = [{}]
 
     # Generate intermediate waypoints
     for i in range(1, num_splits + 1):
@@ -51,9 +52,11 @@ def split_route(start_wp, end_wp, csv_path, split_distance_km=100):
         # Find the closest waypoint in the CSV
         df['distance'] = df.apply(lambda row: geodesic(intermediate_wp, [str(row['LATITUDE']).replace(',','.'), str(row['LONGITUDE']).replace(',','.')]).kilometers, axis=1)
         closest_wp = df.loc[df['distance'].idxmin()]
-        i = 1
-        while i < df['distance'].count():
-            if df['distance'].nsmallest(i).iloc[-1] > split_distance_km * .95:
+        j = 1
+        print("[+] Searching ", i, " with ", df['distance'].min())
+        while j < df['distance'].count():
+            print("[ ] ", df['distance'].nsmallest(j).iloc[-1])
+            if df['distance'].nsmallest(j).iloc[-1] > split_distance_km * 2:
                 break
             # Append the closest waypoint to the 
             # df['distance'].
@@ -61,13 +64,24 @@ def split_route(start_wp, end_wp, csv_path, split_distance_km=100):
             print(way)
             if way not in result:
                 result.append(way)
+                info.append(
+                    {
+                        "name": closest_wp['Name'],
+                        "region": closest_wp['Region'],
+                        "longitude": closest_wp['LONGITUDE'],
+                        "latitude": closest_wp['LATITUDE']
+                    }
+                )
                 break
-            i = i + 1
+            j = j + 1
     
     # Add the end waypoint
     result.append(end_wp)
 
-    return result
+    return {
+        "waypoints": result,
+        "info": info
+    }
 
 @app.route('/getways', methods=['GET'])
 def get_ways():

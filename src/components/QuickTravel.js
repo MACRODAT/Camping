@@ -7,7 +7,7 @@ const QuickTravel = ({name, setCity}) => {
 	const [depcor, setDepcor] = useState(false);
 
 	useEffect(() => {
-		console.log("[A] Modification => ", departureCity);
+		// console.log("[A] Modification => ", departureCity);
 		const objs = cities.filter(obj => obj.city.toUpperCase().startsWith(departureCity.toUpperCase()));
 		setFil(objs);
 		if (objs && objs[0] && objs[0].city.toUpperCase() == departureCity.toUpperCase())

@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "leaflet-routing-machine";
 import RoutingMachine from "./QuickRoutes";
 import axios from 'axios';
+import { setIti, setRoute } from "../store/actions";
 
 const RecenterAutomatically = ({lat,lng}) => {
 	const map = useMap();
@@ -24,6 +25,8 @@ const QuickMap = () => {
 
   const [loop, setLoop] = useState();
 
+  const dispatch = useDispatch();
+
   const fetchWaypoints = async (deppoint_, arrpoint_) => {
     try {
       const response = await axios.get('http://127.0.0.1:5000/getways', {
@@ -32,7 +35,7 @@ const QuickMap = () => {
           start_lon: deppoint_[1],
           end_lat: arrpoint_[0],
           end_lon: arrpoint_[1],
-          split_distance_km: 100
+          split_distance_km: 50
         }
       });
     //   setWaypoints(response.data);
@@ -51,7 +54,18 @@ const QuickMap = () => {
 		if (mapRef.current) {
 			fetchWaypoints([dep.lat, dep.lng], arrpoint).then((val) => {
 				console.log(val)
-				mapRef.current.setWaypoints(val);
+				let waypoints_ = val.waypoints
+				let info = val.info
+				mapRef.current.setWaypoints(waypoints_);
+				mapRef.current.on('routesfound', function(e) {
+					const routes = e.routes;
+					
+					// setWaypoints(itinerary);
+					// console.log('Distance: ' + summary.totalDistance / 1000 + ' km');
+					// console.log('Time: ' + summary.totalTime / 3600 + ' hours');
+					dispatch(setRoute(routes));
+				  });
+				dispatch(setIti(val));
 			}, (err) => {
 				console.log("[E] ", err)
 			});
@@ -64,7 +78,11 @@ const QuickMap = () => {
 		console.log("[M] ", deppoint, [arr.lat, arr.lng]);
 		if (mapRef.current) {
 			fetchWaypoints(deppoint, [arr.lat, arr.lng]).then((val) => {
-				mapRef.current.setWaypoints(val);
+				console.log(val)
+				let waypoints_ = val.waypoints
+				let info = val.info
+				mapRef.current.setWaypoints(waypoints_);
+				dispatch(setIti(val));
 			}, (err) => {
 				console.log("[E] ", err)
 			});
