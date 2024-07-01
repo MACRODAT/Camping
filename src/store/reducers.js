@@ -1,4 +1,4 @@
-import { SETDEPARTURE, SETARRIVAL, SETLINK, SETITI, SETROUTE } from './actions';
+import { SETDEPARTURE, SETARRIVAL, SETLINK, SETITI, SETROUTE, DELETEWAYS, deleteWays } from './actions';
 
 // Initial State
 const initialState = {
@@ -6,6 +6,7 @@ const initialState = {
 	arr: null,
     link: "",
     itinerary: {},
+    deletedWays : [],
     route: null
 };
 
@@ -37,6 +38,12 @@ const counterReducer = (state = initialState, action) => {
                 ...state,
                 route: action.payload
             }
+        case DELETEWAYS:
+            return {
+                ...state,
+                deletedWays: state.deletedWays.concat([action.payload])
+            }
+        
         default:
             return state;
     }

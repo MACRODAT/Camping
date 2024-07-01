@@ -39,7 +39,7 @@ const QuickSummary = () => {
 		summary = route[0].summary;
 		itinerary = route[0].instructions;
 	}
-
+	console.log(data)
 	if (info == null || info.map == null)
 	{
 		return (
@@ -76,7 +76,7 @@ const QuickSummary = () => {
 			distances[i] /= 1000
 			i = i + 1
 		}
-		console.log(distances)
+		// console.log(distances)
 	}
     return (
         <Container key={122}>
@@ -85,7 +85,7 @@ const QuickSummary = () => {
 					route != null ?
 					<Card style={{ width: '100%', margin: '0', padding: '1 px', marginTop: '5px', borderRadius: '0' }}>
 						<Card.Body>
-							<Card.Title>Itinerary ({(summary.totalDistance / 1000).toFixed(1)} km - {(summary.totalTime / 3600).toFixed(2)} h)</Card.Title>
+							<Card.Title>Camps ({info.length -  1}) [{(summary.totalDistance / 1000).toFixed(1)} km - {(summary.totalTime / 3600).toFixed(2)} h]</Card.Title>
 							<Card.Subtitle className="mb-2 text-muted">Each campground with associated info</Card.Subtitle>
 						</Card.Body>
 					</Card>

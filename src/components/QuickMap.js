@@ -16,7 +16,10 @@ const QuickMap = () => {
   const position = [34, -6]
 
   const dep = useSelector((state) => state.dep);
+  const deleted_ = useSelector((state) => state.deletedWays);
   const arr = useSelector((state) => state.arr);
+
+//   console.log(deleted_)
   
   const [pos, setPos] = useState(-1);
   const [deppoint, setDeppoint] = useState(position);
@@ -45,6 +48,32 @@ const QuickMap = () => {
     }
   };
 
+  let webber = (d, a) => {fetchWaypoints(d, a).then((val) => {
+		console.log(val)
+		let waypoints_ = val.waypoints
+		let i = 0;
+		while (i < deleted_.length)
+		{
+			waypoints_ = waypoints_.filter(w => w[0] != deleted_[i][0] || w[1] != deleted_[i][1])
+			val.info = val.info.filter(w => w.latitude != deleted_[i][0] || w.longitude != deleted_[i][1])
+			i = i + 1;
+		}
+		// console.log(waypoints_)
+		mapRef.current.setWaypoints(waypoints_);
+		mapRef.current.on('routesfound', function(e) {
+			const routes = e.routes;
+			dispatch(setRoute(routes));
+		});
+		dispatch(setIti(val));
+	}, (err) => {
+		console.log("[E] ", err)
+	});
+	}
+
+  useEffect(() => {
+	webber(deppoint, arrpoint)
+  }, [deleted_])
+
   useEffect(() => {
 	if (dep != null && (dep.lat != deppoint[0] || dep.lng != deppoint[1]))
 	{
@@ -52,23 +81,7 @@ const QuickMap = () => {
 		setPos(0);
 		console.log("[M] ", [dep.lat, dep.lng], arrpoint);
 		if (mapRef.current) {
-			fetchWaypoints([dep.lat, dep.lng], arrpoint).then((val) => {
-				console.log(val)
-				let waypoints_ = val.waypoints
-				let info = val.info
-				mapRef.current.setWaypoints(waypoints_);
-				mapRef.current.on('routesfound', function(e) {
-					const routes = e.routes;
-					
-					// setWaypoints(itinerary);
-					// console.log('Distance: ' + summary.totalDistance / 1000 + ' km');
-					// console.log('Time: ' + summary.totalTime / 3600 + ' hours');
-					dispatch(setRoute(routes));
-				  });
-				dispatch(setIti(val));
-			}, (err) => {
-				console.log("[E] ", err)
-			});
+			webber([dep.lat, dep.lng], arrpoint);
 		}
 	}
 	else if (arr != null && (arr.lat != arrpoint[0] || arr.lng != arrpoint[1]))
@@ -77,15 +90,7 @@ const QuickMap = () => {
 		setPos(1);
 		console.log("[M] ", deppoint, [arr.lat, arr.lng]);
 		if (mapRef.current) {
-			fetchWaypoints(deppoint, [arr.lat, arr.lng]).then((val) => {
-				console.log(val)
-				let waypoints_ = val.waypoints
-				let info = val.info
-				mapRef.current.setWaypoints(waypoints_);
-				dispatch(setIti(val));
-			}, (err) => {
-				console.log("[E] ", err)
-			});
+			webber(deppoint, [arr.lat, arr.lng]);
 		}
 	}
 	else
