@@ -3,6 +3,7 @@ export const SETDEPARTURE = 'SETDEPARTURE';
 export const SETARRIVAL = 'SETARRIVAL';
 export const SETLINK = 'SETLINK'
 export const SETITI = 'SETITI'
+export const SETPROFILE = 'SETPROFILE'
 export const SETROUTE = 'SETROUTE'
 export const DELETEWAYS = 'DELETEWAYS'
 
@@ -34,6 +35,11 @@ export const setRoute = (link) => ({
 
 export const deleteWays = (link) => ({
     type: DELETEWAYS,
+	payload: link
+});
+
+export const setProfile = (link) => ({
+    type: SETPROFILE,
 	payload: link
 });
 

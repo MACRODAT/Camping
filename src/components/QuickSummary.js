@@ -85,7 +85,7 @@ const QuickSummary = () => {
 					route != null ?
 					<Card style={{ width: '100%', margin: '0', padding: '1 px', marginTop: '5px', borderRadius: '0' }}>
 						<Card.Body>
-							<Card.Title>Camps ({info.length -  1}) [{(summary.totalDistance / 1000).toFixed(1)} km - {(summary.totalTime / 3600).toFixed(2)} h]</Card.Title>
+							<Card.Title>Camps ({info.length -  1}) [{(summary?.totalDistance / 1000).toFixed(1)} km - {(summary.totalTime / 3600).toFixed(2)} h]</Card.Title>
 							<Card.Subtitle className="mb-2 text-muted">Each campground with associated info</Card.Subtitle>
 						</Card.Body>
 					</Card>

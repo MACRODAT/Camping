@@ -2,10 +2,9 @@ import pandas as pd
 from geopy.distance import geodesic
 from os.path import dirname, join
 from flask import Flask, request, jsonify
-from flask_cors import CORS
+from apps import app
 
-app = Flask(__name__)
-CORS(app)
+# app = Flask(__name__)
 csv_path = join(dirname(__file__), 'data.csv')
 
 @app.route('/', methods=['GET'])

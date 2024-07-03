@@ -89,6 +89,8 @@ body {
 	padding: 0px;
 	color: #E4E4ED;
 	width: 100%;
+	border-bottom: 1px solid #7fc743;
+	background-color: #132206 !important;
 
 	#title{
 		margin: 0px; padding: 0px;
@@ -138,6 +140,15 @@ body {
 	box-shadow: inset 17px 0px 20px 2px rgba(0, 0, 0, 0.5);
 	overflow-y: scroll;
   }
+  #newRender
+  {
+	
+    background-color:rgb(12, 15, 12);
+	margin: 0;
+	border-left: 1px solid rgb(255, 255, 255);
+	box-shadow: inset 10px 0px 12px 2px rgba(5, 67, 12, 0.886);
+	overflow-y: scroll;
+  }
 
   .stateimage
   {
@@ -162,3 +173,21 @@ body {
   .imageinvert{
 	filter: invert(1);
   }
+
+  	#jiggler
+  	{
+		width: 100px;
+		transform: translateY(10px);
+		animation: jiggle 2.5s infinite;
+	  
+	}
+	@keyframes jiggle {
+		0%, 100% {
+			transform: translateY(10px);
+			opacity: 1;
+		}
+		50% {
+			transform: translateY(-10px);
+			opacity: 0.7;
+		}
+	}

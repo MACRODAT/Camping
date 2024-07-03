@@ -8,11 +8,15 @@ import { setLink } from '../store/actions';
 import StateData from '../components/stateData';
 import QuickSummary from './QuickSummary';
 import WebsiteData from './websitedata';
+import QuickSignup from './QuickSignup';
+import QuickLogin from './QuickLogin';
 
 
 function Home() {
 
   const link_ = useSelector(state => state.link);
+  const p = useSelector(state => state.profile_);
+  console.log(p)
   const dispatch = useDispatch();
 
   return (
@@ -32,24 +36,57 @@ function Home() {
             </div>
           </div>
 
-          
-          <div className='row' id="showCamps">
-            <div className='col col-6 cursor'>
-                Useful links
-            </div>
-            <div 
-              onClick={() => dispatch(setLink('state'))}
+          <div className='container' style={{padding: '0', margin: '0'}}>
+            {
+              p?.loggedIn ?
+              (
+                <div className='row' id="showCamps">
+                  <div 
+                  className='col col-8'>
+                      {p.email}
+                  </div>
+                  <div 
+                    onClick={() => dispatch(setLink('account'))}
+                    className='col col-4 cursor'>
+                      My profile
+                  </div>
+                </div>
+              )
+              :
+              (
+                <div className='row' id="showCamps">
+                  <div 
+                  onClick={() => dispatch(setLink('login'))}
+                  className='col col-6 cursor'>
+                      Login
+                  </div>
+                  <div 
+                    onClick={() => dispatch(setLink('signup'))}
+                    className='col col-6 cursor'>
+                      Sign up
+                  </div>
+                </div>
+              )
+            }
+            <div className='row' id="showCamps">
+              <div className='col col-6'>
+                  Useful links
+              </div>
+              <div 
+                onClick={() => dispatch(setLink('state'))}
+                className='col col-2 d-none d-md-block cursor'>
+                State data
+              </div>
+              <div 
+              onClick={() => dispatch(setLink('website'))}
               className='col col-2 d-none d-md-block cursor'>
-              State data
+                Website data
+              </div>
+              <div className='col col-2 d-none d-md-block cursor'>
+                About
+              </div>
             </div>
-            <div 
-            onClick={() => dispatch(setLink('website'))}
-            className='col col-2 d-none d-md-block cursor'>
-              Website data
-            </div>
-            <div className='col col-2 d-none d-md-block cursor'>
-              About
-            </div>
+            
           </div>
 
           <QuickForm />
@@ -78,6 +115,20 @@ function Home() {
             link_ == "website" ? 
             <div id="stateRender" style={{width: '100%', height: '100%'}}>
               <WebsiteData />
+            </div>
+            : <></>
+          }
+          {
+            link_ == "signup" ? 
+            <div id="newRender" style={{width: '100%', height: '100%'}}>
+              <QuickSignup />
+            </div>
+            : <></>
+          }
+          {
+            link_ == "login" ? 
+            <div id="newRender" style={{width: '100%', height: '100%'}}>
+              <QuickLogin />
             </div>
             : <></>
           }

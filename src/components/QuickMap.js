@@ -49,7 +49,10 @@ const QuickMap = () => {
   };
 
   let webber = (d, a) => {fetchWaypoints(d, a).then((val) => {
-		console.log(val)
+		if (val == null)
+		{
+			return;
+		}
 		let waypoints_ = val.waypoints
 		let i = 0;
 		while (i < deleted_.length)
@@ -59,8 +62,8 @@ const QuickMap = () => {
 			i = i + 1;
 		}
 		// console.log(waypoints_)
-		mapRef.current.setWaypoints(waypoints_);
-		mapRef.current.on('routesfound', function(e) {
+		mapRef.current?.setWaypoints(waypoints_);
+		mapRef.current?.on('routesfound', function(e) {
 			const routes = e.routes;
 			dispatch(setRoute(routes));
 		});
