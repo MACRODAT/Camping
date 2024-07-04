@@ -16,7 +16,6 @@ function Home() {
 
   const link_ = useSelector(state => state.link);
   const p = useSelector(state => state.profile_);
-  console.log(p)
   const dispatch = useDispatch();
 
   return (
